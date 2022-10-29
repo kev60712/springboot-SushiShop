@@ -1,10 +1,10 @@
-package com.example.springbootsushishop.dao.impl;
+package com.example.springbootsushishop.repo.impl;
 
-import com.example.springbootsushishop.dao.SushiRepo;
-import com.example.springbootsushishop.model.Sushi;
+import com.example.springbootsushishop.repo.SushiRepo;
+import com.example.springbootsushishop.data.model.Sushi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import com.example.springbootsushishop.rowmapper.SushiRowMapper;
+import com.example.springbootsushishop.data.model.rowmapper.SushiRowMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

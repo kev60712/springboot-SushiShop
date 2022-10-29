@@ -1,4 +1,4 @@
-package com.example.springbootsushishop.model;
+package com.example.springbootsushishop.data.model;
 
 import lombok.Getter;
 import lombok.Setter;

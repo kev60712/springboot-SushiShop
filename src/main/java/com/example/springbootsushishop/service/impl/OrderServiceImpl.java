@@ -1,10 +1,10 @@
 package com.example.springbootsushishop.service.impl;
 
-import com.example.springbootsushishop.dao.SushiOrderRepo;
-import com.example.springbootsushishop.dao.SushiRepo;
-import com.example.springbootsushishop.dto.OrderRequest;
-import com.example.springbootsushishop.model.Order;
-import com.example.springbootsushishop.model.Sushi;
+import com.example.springbootsushishop.repo.SushiOrderRepo;
+import com.example.springbootsushishop.repo.SushiRepo;
+import com.example.springbootsushishop.data.dto.OrderRequest;
+import com.example.springbootsushishop.data.model.Order;
+import com.example.springbootsushishop.data.model.Sushi;
 import com.example.springbootsushishop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

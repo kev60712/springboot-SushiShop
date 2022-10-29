@@ -1,9 +1,7 @@
 package com.example.springbootsushishop.data;
 
-import com.example.springbootsushishop.dao.SushiOrderRepo;
-import com.example.springbootsushishop.dao.SushiRepo;
-import com.example.springbootsushishop.model.Order;
-import com.example.springbootsushishop.model.Sushi;
+import com.example.springbootsushishop.data.model.Order;
+import com.example.springbootsushishop.data.model.Sushi;
 import com.example.springbootsushishop.service.OrderService;
 import lombok.Getter;
 import lombok.Setter;

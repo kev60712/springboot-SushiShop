@@ -1,4 +1,4 @@
-package com.example.springbootsushishop.dto;
+package com.example.springbootsushishop.data.dto;
 
 import lombok.Getter;
 import lombok.Setter;

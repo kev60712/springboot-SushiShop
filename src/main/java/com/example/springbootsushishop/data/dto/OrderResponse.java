@@ -1,9 +1,9 @@
-package com.example.springbootsushishop.dto;
+package com.example.springbootsushishop.data.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
-import com.example.springbootsushishop.model.Order;
+import com.example.springbootsushishop.data.model.Order;
 
 @Getter
 @Setter

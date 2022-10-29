@@ -1,8 +1,6 @@
 package com.example.springbootsushishop;
 
 import com.example.springbootsushishop.controller.OrderController;
-import com.example.springbootsushishop.dao.SushiOrderRepo;
-import com.example.springbootsushishop.dao.SushiRepo;
 import com.example.springbootsushishop.data.Chef;
 import com.example.springbootsushishop.data.OrderQueue;
 import com.example.springbootsushishop.service.OrderService;

@@ -1,6 +1,6 @@
-package com.example.springbootsushishop.dao;
+package com.example.springbootsushishop.repo;
 
-import com.example.springbootsushishop.model.Sushi;
+import com.example.springbootsushishop.data.model.Sushi;
 
 public interface SushiRepo {
 

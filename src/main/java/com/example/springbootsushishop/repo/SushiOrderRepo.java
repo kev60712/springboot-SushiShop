@@ -1,7 +1,7 @@
-package com.example.springbootsushishop.dao;
+package com.example.springbootsushishop.repo;
 
-import com.example.springbootsushishop.dto.OrderRequest;
-import com.example.springbootsushishop.model.Order;
+import com.example.springbootsushishop.data.dto.OrderRequest;
+import com.example.springbootsushishop.data.model.Order;
 
 import java.util.List;
 

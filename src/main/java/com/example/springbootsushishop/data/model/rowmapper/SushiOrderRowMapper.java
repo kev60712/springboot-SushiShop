@@ -1,6 +1,6 @@
-package com.example.springbootsushishop.rowmapper;
+package com.example.springbootsushishop.data.model.rowmapper;
 
-import com.example.springbootsushishop.model.Order;
+import com.example.springbootsushishop.data.model.Order;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

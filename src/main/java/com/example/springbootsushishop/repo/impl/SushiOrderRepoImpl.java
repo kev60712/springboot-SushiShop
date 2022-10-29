@@ -1,18 +1,18 @@
-package com.example.springbootsushishop.dao.impl;
+package com.example.springbootsushishop.repo.impl;
 
-import com.example.springbootsushishop.dao.StatusRepo;
-import com.example.springbootsushishop.dao.SushiOrderRepo;
-import com.example.springbootsushishop.dao.SushiRepo;
-import com.example.springbootsushishop.dto.OrderRequest;
-import com.example.springbootsushishop.model.Status;
-import com.example.springbootsushishop.model.Sushi;
-import com.example.springbootsushishop.model.Order;
+import com.example.springbootsushishop.repo.StatusRepo;
+import com.example.springbootsushishop.repo.SushiOrderRepo;
+import com.example.springbootsushishop.repo.SushiRepo;
+import com.example.springbootsushishop.data.dto.OrderRequest;
+import com.example.springbootsushishop.data.model.Status;
+import com.example.springbootsushishop.data.model.Sushi;
+import com.example.springbootsushishop.data.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import com.example.springbootsushishop.rowmapper.SushiOrderRowMapper;
+import com.example.springbootsushishop.data.model.rowmapper.SushiOrderRowMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;

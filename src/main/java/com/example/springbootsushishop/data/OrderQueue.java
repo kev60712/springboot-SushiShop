@@ -1,13 +1,10 @@
 package com.example.springbootsushishop.data;
 
-import com.example.springbootsushishop.model.Order;
-import com.example.springbootsushishop.model.Sushi;
+import com.example.springbootsushishop.data.model.Order;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 

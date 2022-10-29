@@ -1,10 +1,9 @@
-package com.example.springbootsushishop.dto;
+package com.example.springbootsushishop.data.dto;
 
-import com.example.springbootsushishop.model.Order;
+import com.example.springbootsushishop.data.model.Order;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 

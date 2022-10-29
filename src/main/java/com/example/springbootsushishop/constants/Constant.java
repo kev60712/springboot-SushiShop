@@ -8,6 +8,4 @@ public class Constant {
     // Bonus
     public static final String ORDER_MSG_ORDER_PAUSED = "Order paused";
     public static final String ORDER_MSG_ORDER_RESUMED = "Order resumed";
-
-
 }

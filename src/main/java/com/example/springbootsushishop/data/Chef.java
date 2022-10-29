@@ -5,11 +5,15 @@ import com.example.springbootsushishop.dao.SushiRepo;
 import com.example.springbootsushishop.model.Order;
 import com.example.springbootsushishop.model.Sushi;
 import com.example.springbootsushishop.service.OrderService;
+import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
+@Getter
+@Setter
 public class Chef implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(Chef.class);
@@ -19,6 +23,10 @@ public class Chef implements Runnable {
     private OrderQueue orderQueue;
 
     private OrderService orderService;
+
+    private String status;
+
+    private Integer currentOrderId;
 
     public Chef(OrderQueue orderQueue, OrderService orderService, String name){
         this.orderQueue = orderQueue;
@@ -32,9 +40,9 @@ public class Chef implements Runnable {
             try{
                 if (orderQueue.getQueue().peek() != null){
                     Order order = orderQueue.take();
+                    this.status = "in-progress";
+                    this.currentOrderId = order.getId();
                     doOrder(order);
-                }else{
-                    //System.out.println("Wait Order");
                 }
                 TimeUnit.SECONDS.sleep(1L);
             }catch (InterruptedException e){
@@ -48,20 +56,28 @@ public class Chef implements Runnable {
         orderService.progressOrder(order.getId());
         logger.info(String.format("%s, orderId: %s, sushi: %s, in-progress", this.name, order.getId(), sushi.getName()));
         doSushi(sushi);
+        if (isCancelled(this.status)){
+            logger.info(String.format("%s, orderId: %s, sushi: %s, cancelled", this.name, order.getId(), sushi.getName()));
+            return;
+        }
         orderService.finishOrder(order.getId());
         logger.info(String.format("%s, orderId: %s, sushi: %s, finished", this.name, order.getId(), sushi.getName()));
     }
 
     public void doSushi(Sushi sushi) throws InterruptedException {
-//        TimeUnit.SECONDS.sleep(Long.valueOf(sushi.getTimeToMake()));
-        int ss = sushi.getTimeToMake()/10;
-        int i = 1;
-        while (ss > 0){
+        int timeToMake = sushi.getTimeToMake();
+        int spendTime = 1;
+        while (timeToMake >= spendTime){
             TimeUnit.SECONDS.sleep(1L);
-            logger.info(String.valueOf(i));
-            ss--;
-            i++;
+            spendTime++;
+            if (isCancelled(this.status)){
+                break;
+            }
         }
+    }
+
+    public boolean isCancelled(String status){
+        return status.equalsIgnoreCase("cancelled");
     }
 
 

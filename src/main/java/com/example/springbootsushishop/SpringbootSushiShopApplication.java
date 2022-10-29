@@ -1,5 +1,6 @@
 package com.example.springbootsushishop;
 
+import com.example.springbootsushishop.controller.OrderController;
 import com.example.springbootsushishop.dao.SushiOrderRepo;
 import com.example.springbootsushishop.dao.SushiRepo;
 import com.example.springbootsushishop.data.Chef;
@@ -20,6 +21,9 @@ public class SpringbootSushiShopApplication {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private OrderController orderController;
+
     @PostConstruct
     public void init(){
         Chef chef1 = new Chef(orderQueue, orderService, "Chef1");
@@ -28,6 +32,9 @@ public class SpringbootSushiShopApplication {
         Thread chef1Thread = new Thread(chef1);
         Thread chef2Thread = new Thread(chef2);
         Thread chef3Thread = new Thread(chef3);
+        orderController.addChef(chef1);
+        orderController.addChef(chef2);
+        orderController.addChef(chef3);
         chef1Thread.start();
         chef2Thread.start();
         chef3Thread.start();

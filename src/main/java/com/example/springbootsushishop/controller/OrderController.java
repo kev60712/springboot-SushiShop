@@ -1,6 +1,7 @@
 package com.example.springbootsushishop.controller;
 
 import com.example.springbootsushishop.constants.Constant;
+import com.example.springbootsushishop.data.Chef;
 import com.example.springbootsushishop.data.OrderQueue;
 import com.example.springbootsushishop.dto.OrderRequest;
 import com.example.springbootsushishop.dto.OrderResponse;
@@ -12,17 +13,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.springbootsushishop.service.OrderService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @RestController
 public class OrderController {
 
+    private List<Chef> chefList = new ArrayList<>();
+
     @Autowired
     private OrderService orderService;
 
     @Autowired
     private OrderQueue orderQueue;
+
+    public void addChef(Chef chef){
+        chefList.add(chef);
+    }
+
+    public Chef findChefByOrderId(Integer id){
+        for (Chef chef: chefList){
+            if (chef.getCurrentOrderId() == id){
+                return chef;
+            }
+        }
+        return null;
+    }
 
     @PostMapping("/orders")
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest OrderRequest) throws InterruptedException {
@@ -46,8 +63,11 @@ public class OrderController {
         if (order == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        // Stop Chef
+        Chef chef = findChefByOrderId(orderId);
+        chef.setStatus("cancelled");
 
-        // Change Status
+        // Cancel Order
         orderService.cancelOrder(orderId);
         OrderResponse orderResponse = new OrderResponse();
         orderResponse.setCode(0);

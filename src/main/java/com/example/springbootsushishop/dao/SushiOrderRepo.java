@@ -3,12 +3,16 @@ package com.example.springbootsushishop.dao;
 import com.example.springbootsushishop.dto.OrderRequest;
 import com.example.springbootsushishop.model.Order;
 
+import java.util.List;
+
 public interface SushiOrderRepo {
 
-    Order getOrderById(Integer id);
+    Order findOrderById(Integer id);
 
     Integer createOrder(OrderRequest orderRequest);
 
-    void cancelOrder(Integer id);
+    void updateOrder(Integer id, String status);
+
+    List<Order> findAllOrder();
 
 }

@@ -12,5 +12,6 @@ public class Order {
     private Integer statusId;
     private Integer sushiId;
     private Timestamp createdAt;
+    private Timestamp lastUpdatedAt;
 }
 

@@ -32,4 +32,20 @@ public class SushiRepoImpl implements SushiRepo {
         }
     }
 
+    @Override
+    public Sushi getSushiById(Integer id) {
+        String sql = "SELECT id, name, time_to_make From sushi WHERE id = :id";
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+
+        List<Sushi> sushiList = namedParameterJdbcTemplate.query(sql, params, new SushiRowMapper());
+
+        if (sushiList.size() > 0){
+            return sushiList.get(0);
+        }else{
+            return null;
+        }
+    }
+
+
 }

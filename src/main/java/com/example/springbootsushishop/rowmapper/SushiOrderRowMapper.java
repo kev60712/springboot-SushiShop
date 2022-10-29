@@ -15,6 +15,7 @@ public class SushiOrderRowMapper implements RowMapper<Order> {
         order.setStatusId(rs.getInt("status_id"));
         order.setSushiId(rs.getInt("sushi_id"));
         order.setCreatedAt(rs.getTimestamp("createdAt"));
+        order.setLastUpdatedAt(rs.getTimestamp("lastUpdatedAt"));
         return order;
     }
 }

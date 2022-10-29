@@ -33,8 +33,8 @@ public class SushiOrderRepoImpl implements SushiOrderRepo {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public Order getOrderById(Integer id) {
-        String sql = "SELECT id, status_id, sushi_id, createdAt FROM sushi_order WHERE id = :id";
+    public Order findOrderById(Integer id) {
+        String sql = "SELECT id, status_id, sushi_id, createdAt, lastUpdatedAt FROM sushi_order WHERE id = :id";
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
 
@@ -49,8 +49,8 @@ public class SushiOrderRepoImpl implements SushiOrderRepo {
 
     @Override
     public Integer createOrder(OrderRequest orderRequest) {
-        String sql = "INSERT INTO sushi_order (status_id, sushi_id, createdAt) " +
-                "VALUES ( :statusId, :sushiId, :createdAt )";
+        String sql = "INSERT INTO sushi_order (status_id, sushi_id, createdAt, lastUpdatedAt) " +
+                "VALUES ( :statusId, :sushiId, :createdAt, :lastUpdatedAt )";
 
         Status status = statusRepo.getStatusByName("created");
         Sushi sushi = sushiRepo.getSushiByName(orderRequest.getSushiName());
@@ -59,6 +59,7 @@ public class SushiOrderRepoImpl implements SushiOrderRepo {
         params.put("statusId", status.getId());
         params.put("sushiId", sushi.getId());
         params.put("createdAt", new Date());
+        params.put("lastUpdatedAt", new Date());
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -68,15 +69,23 @@ public class SushiOrderRepoImpl implements SushiOrderRepo {
     }
 
     @Override
-    public void cancelOrder(Integer id) {
-        String sql = "UPDATE sushi_order SET status_id = :statusId WHERE id = :id";
-        Status status = statusRepo.getStatusByName("cancelled");
+    public void updateOrder(Integer id, String statusStr) {
+        String sql = "UPDATE sushi_order SET status_id = :statusId, lastUpdatedAt = :lastUpdatedAt  WHERE id = :id";
+        Status status = statusRepo.getStatusByName(statusStr);
 
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         params.put("statusId", status.getId());
+        params.put("lastUpdatedAt", new Date());
 
         namedParameterJdbcTemplate.update(sql, params);
+    }
+
+    @Override
+    public List<Order> findAllOrder() {
+        String sql = "SELECT id, status_id, sushi_id, createdAt, lastUpdatedAt FROM sushi_order";
+        List<Order> orderList = namedParameterJdbcTemplate.query(sql, new HashMap<>(), new SushiOrderRowMapper());
+        return orderList;
     }
 
 }

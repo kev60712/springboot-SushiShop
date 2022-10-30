@@ -52,13 +52,20 @@ public class Chef implements Runnable {
 
     public void doOrder(Order order) throws InterruptedException {
         Sushi sushi = orderService.getSushiById(order.getSushiId());
+
+        // In-Progress Order
         orderService.progressOrder(order.getId());
         logger.info(String.format("%s, orderId: %s, sushi: %s, in-progress", this.name, order.getId(), sushi.getName()));
+
         doSushi(sushi);
+
+        // Cancel Order
         if (isCancelled(this.status)){
             logger.info(String.format("%s, orderId: %s, sushi: %s, cancelled", this.name, order.getId(), sushi.getName()));
             return;
         }
+
+        // Complete Order
         orderService.finishOrder(order.getId());
         logger.info(String.format("%s, orderId: %s, sushi: %s, finished", this.name, order.getId(), sushi.getName()));
     }
@@ -68,10 +75,14 @@ public class Chef implements Runnable {
         int spendTime = 1;
         while (timeToMake >= spendTime){
             TimeUnit.SECONDS.sleep(1L);
-            logger.info(String.valueOf(spendTime));
+//            logger.info(String.valueOf(spendTime));
+
+            // Pause Order and Wait
             while (isPaused(this.status)){
                 TimeUnit.SECONDS.sleep(1L);
             }
+
+            // Cancel Order
             if (isCancelled(this.status)){
                 break;
             }

@@ -12,8 +12,8 @@ The program should be built using the following frameworks/libraries/tools:
 
 
 ## Project Architecture:
-- I decided to use the Producer Customer pattern to implement SushiShop. Because in the design, I can make sure each chef can complete the order concurrency and it won't interfere with each other. Furthermore, we can ensure each order can only be done by one chef.
-- PS. In order to calculate timeSpent for each sushi, I added one column "lastUpdatedAt" in sushi_order table.
+- Used the Producer Customer pattern to implement SushiShop. In this design, we can make sure each chef can complete the order concurrently, and it won't interfere with each other. Furthermore, we can ensure no chef will do the same order. 
+- In order to calculate timeSpent for each sushi, I added one column "lastUpdatedAt" in sushi_order table.
 
 ![Project Architecture](https://user-images.githubusercontent.com/20982158/198888950-cda3d49e-51e7-41df-b9ff-a1540ad99997.png)
 ![Project Structure](https://user-images.githubusercontent.com/20982158/198890482-f950c58a-55f6-4e9c-869b-4cf3bd133fbf.png)

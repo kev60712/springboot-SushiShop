@@ -1,5 +1,6 @@
 package com.example.springbootsushishop.data;
 
+import com.example.springbootsushishop.constants.OrderConstant;
 import com.example.springbootsushishop.data.model.Order;
 import com.example.springbootsushishop.data.model.Sushi;
 import com.example.springbootsushishop.service.OrderService;
@@ -38,13 +39,13 @@ public class Chef implements Runnable {
             try{
                 if (orderQueue.getQueue().peek() != null){
                     Order order = orderQueue.take();
-                    this.status = "in-progress";
+                    this.status = OrderConstant.IN_PROGRESS_STATUS;
                     this.currentOrderId = order.getId();
                     doOrder(order);
                 }
                 TimeUnit.SECONDS.sleep(1L);
             }catch (InterruptedException e){
-                System.out.println("Chef was interrupted");
+                logger.error("Chef was interrupted");
             }
         }
     }
@@ -67,16 +68,27 @@ public class Chef implements Runnable {
         int spendTime = 1;
         while (timeToMake >= spendTime){
             TimeUnit.SECONDS.sleep(1L);
-            spendTime++;
+            logger.info(String.valueOf(spendTime));
+            while (isPaused(this.status)){
+                TimeUnit.SECONDS.sleep(1L);
+            }
             if (isCancelled(this.status)){
                 break;
             }
+            spendTime++;
         }
     }
 
-    public boolean isCancelled(String status){
-        return status.equalsIgnoreCase("cancelled");
+    public void updateChefStatus(String status){
+        this.status = status;
+        logger.info(String.format("%s, orderId: %s, stauts: %s", this.name, this.currentOrderId, this.status));
     }
 
+    public boolean isCancelled(String status){
+        return status.equalsIgnoreCase(OrderConstant.CANCELLED_STATUS);
+    }
 
+    public boolean isPaused(String status){
+        return status.equalsIgnoreCase(OrderConstant.PAUSED_STATUS);
+    }
 }

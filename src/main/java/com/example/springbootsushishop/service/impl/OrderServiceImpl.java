@@ -1,5 +1,6 @@
 package com.example.springbootsushishop.service.impl;
 
+import com.example.springbootsushishop.constants.OrderConstant;
 import com.example.springbootsushishop.repo.SushiOrderRepo;
 import com.example.springbootsushishop.repo.SushiRepo;
 import com.example.springbootsushishop.data.dto.OrderRequest;
@@ -32,22 +33,22 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void cancelOrder(Integer id) {
-        sushiOrderRepo.updateOrder(id, "cancelled");
+        sushiOrderRepo.updateOrder(id, OrderConstant.CANCELLED_STATUS);
     }
 
     @Override
     public void finishOrder(Integer id) {
-        sushiOrderRepo.updateOrder(id, "finished");
+        sushiOrderRepo.updateOrder(id, OrderConstant.FINISHED_STATUS);
     }
 
     @Override
     public void pauseOrder(Integer id) {
-        sushiOrderRepo.updateOrder(id, "paused");
+        sushiOrderRepo.updateOrder(id, OrderConstant.PAUSED_STATUS);
     }
 
     @Override
     public void progressOrder(Integer id) {
-        sushiOrderRepo.updateOrder(id, "in-progress");
+        sushiOrderRepo.updateOrder(id, OrderConstant.IN_PROGRESS_STATUS);
     }
 
     @Override

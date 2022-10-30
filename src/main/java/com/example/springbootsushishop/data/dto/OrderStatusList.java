@@ -9,14 +9,14 @@ import java.util.List;
 
 @Getter
 @Setter
-public class OrderStatus {
+public class OrderStatusList {
     private List<OrderInfo> inProgress;
     private List<OrderInfo> created;
     private List<OrderInfo> paused;
     private List<OrderInfo> cancelled;
     private List<OrderInfo> completed;
 
-    public OrderStatus(List<Order> orderList){
+    public OrderStatusList(List<Order> orderList){
         inProgress = new ArrayList<>();
         created = new ArrayList<>();
         paused = new ArrayList<>();

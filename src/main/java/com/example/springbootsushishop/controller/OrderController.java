@@ -1,11 +1,11 @@
 package com.example.springbootsushishop.controller;
 
-import com.example.springbootsushishop.constants.Constant;
+import com.example.springbootsushishop.constants.OrderConstant;
 import com.example.springbootsushishop.data.Chef;
 import com.example.springbootsushishop.data.OrderQueue;
 import com.example.springbootsushishop.data.dto.OrderRequest;
 import com.example.springbootsushishop.data.dto.OrderResponse;
-import com.example.springbootsushishop.data.dto.OrderStatus;
+import com.example.springbootsushishop.data.dto.OrderStatusList;
 import com.example.springbootsushishop.data.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,19 +28,6 @@ public class OrderController {
     @Autowired
     private OrderQueue orderQueue;
 
-    public void addChef(Chef chef){
-        chefList.add(chef);
-    }
-
-    public Chef findChefByOrderId(Integer id){
-        for (Chef chef: chefList){
-            if (chef.getCurrentOrderId() == id){
-                return chef;
-            }
-        }
-        return null;
-    }
-
     @PostMapping("/orders")
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest OrderRequest) throws InterruptedException {
         Integer id = orderService.createOrder(OrderRequest);
@@ -48,10 +35,8 @@ public class OrderController {
 
         orderQueue.put(order);
 
-        OrderResponse orderResponse = new OrderResponse();
+        OrderResponse orderResponse = createOrderResponse(0, OrderConstant.ORDER_MSG_ORDER_CREATED);
         orderResponse.setOrder(order);
-        orderResponse.setCode(0);
-        orderResponse.setMsg(Constant.ORDER_MSG_ORDER_CREATED);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(orderResponse);
     }
@@ -65,33 +50,79 @@ public class OrderController {
         }
         // Stop Chef
         Chef chef = findChefByOrderId(orderId);
-        chef.setStatus("cancelled");
+        chef.updateChefStatus(OrderConstant.CANCELLED_STATUS);
 
         // Cancel Order
         orderService.cancelOrder(orderId);
-        OrderResponse orderResponse = new OrderResponse();
-        orderResponse.setCode(0);
-        orderResponse.setMsg(Constant.ORDER_MSG_ORDER_CANCELLED);
+
+        OrderResponse orderResponse = createOrderResponse(0, OrderConstant.ORDER_MSG_ORDER_CANCELLED);
 
         return ResponseEntity.status(HttpStatus.OK).body(orderResponse);
     }
 
     @GetMapping("/orders/status")
-    public ResponseEntity<OrderStatus> displayOrdersStatus(){
+    public ResponseEntity<OrderStatusList> displayOrdersStatus(){
         List<Order> orderList = orderService.getAllOrder();
-        OrderStatus orderStatus = new OrderStatus(orderList);
-        return ResponseEntity.status(HttpStatus.OK).body(orderStatus);
+        OrderStatusList orderStatusList = new OrderStatusList(orderList);
+        return ResponseEntity.status(HttpStatus.OK).body(orderStatusList);
     }
 
     // Bonus
     @PutMapping("/orders/{orderId}/pause")
-    public ResponseEntity<Object> pauseAnOrder(@PathVariable String orderId){
-        return null;
+    public ResponseEntity<Object> pauseAnOrder(@PathVariable Integer orderId){
+        // Check Order Exist
+        Order order = orderService.getOrderById(orderId);
+        if (order == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        // Pause Chef
+        Chef chef = findChefByOrderId(orderId);
+        chef.updateChefStatus(OrderConstant.PAUSED_STATUS);
+
+        // Pause Order
+        orderService.pauseOrder(orderId);
+
+        OrderResponse orderResponse = createOrderResponse(0, OrderConstant.ORDER_MSG_ORDER_PAUSED);
+
+        return ResponseEntity.status(HttpStatus.OK).body(orderResponse);
     }
 
     @PutMapping("/orders/{orderId}/resume")
-    public ResponseEntity<Object> resumeAnOrder(@PathVariable String orderId){
+    public ResponseEntity<Object> resumeAnOrder(@PathVariable Integer orderId){
+        // Check Order Exist
+        Order order = orderService.getOrderById(orderId);
+        if (order == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        // Resume Order
+        orderService.progressOrder(orderId);
+
+        // Resume Chef
+        Chef chef = findChefByOrderId(orderId);
+        chef.updateChefStatus(OrderConstant.IN_PROGRESS_STATUS);
+
+        OrderResponse orderResponse = createOrderResponse(0, OrderConstant.ORDER_MSG_ORDER_RESUMED);
+
+        return ResponseEntity.status(HttpStatus.OK).body(orderResponse);
+    }
+
+    public void addChef(Chef chef){
+        chefList.add(chef);
+    }
+
+    public Chef findChefByOrderId(Integer id){
+        for (Chef chef: chefList){
+            if (chef.getCurrentOrderId() == id){
+                return chef;
+            }
+        }
         return null;
     }
 
+    public OrderResponse createOrderResponse(Integer code, String msg){
+        OrderResponse orderResponse = new OrderResponse();
+        orderResponse.setCode(code);
+        orderResponse.setMsg(msg);
+        return orderResponse;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.springbootsushishop.repo.impl;
 
+import com.example.springbootsushishop.constants.OrderConstant;
 import com.example.springbootsushishop.repo.StatusRepo;
 import com.example.springbootsushishop.repo.SushiOrderRepo;
 import com.example.springbootsushishop.repo.SushiRepo;
@@ -52,7 +53,7 @@ public class SushiOrderRepoImpl implements SushiOrderRepo {
         String sql = "INSERT INTO sushi_order (status_id, sushi_id, createdAt, lastUpdatedAt) " +
                 "VALUES ( :statusId, :sushiId, :createdAt, :lastUpdatedAt )";
 
-        Status status = statusRepo.getStatusByName("created");
+        Status status = statusRepo.getStatusByName(OrderConstant.CREATED_STATUS);
         Sushi sushi = sushiRepo.getSushiByName(orderRequest.getSushiName());
 
         Map<String, Object> params = new HashMap<>();

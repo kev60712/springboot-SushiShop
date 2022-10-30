@@ -7,6 +7,7 @@ import com.example.springbootsushishop.data.dto.OrderRequest;
 import com.example.springbootsushishop.data.dto.OrderResponse;
 import com.example.springbootsushishop.data.dto.OrderStatusList;
 import com.example.springbootsushishop.data.model.Order;
+import com.example.springbootsushishop.data.model.Sushi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,13 @@ public class OrderController {
 
     @PostMapping("/orders")
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest OrderRequest) throws InterruptedException {
+        // Check Sushi Exists
+        Sushi sushi = orderService.getSushiByName(OrderRequest.getSushiName());
+        if (sushi == null){
+            OrderResponse orderResponse = createOrderResponse(1, OrderConstant.ORDER_MSG_PRODUCT_NOT_EXIST);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(orderResponse);
+        }
+
         Integer id = orderService.createOrder(OrderRequest);
         Order order = orderService.getOrderById(id);
 
@@ -43,10 +51,11 @@ public class OrderController {
 
     @DeleteMapping("/orders/{orderId}")
     public ResponseEntity<Object> cancelOrder(@PathVariable(required = true) Integer orderId){
-        // Check Order Exist
+        // Check Order Exists
         Order order = orderService.getOrderById(orderId);
         if (order == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            OrderResponse orderResponse = createOrderResponse(1, OrderConstant.ORDER_MSG_ORDER_NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(orderResponse);
         }
         // Stop Chef
         Chef chef = findChefByOrderId(orderId);
@@ -73,7 +82,8 @@ public class OrderController {
         // Check Order Exist
         Order order = orderService.getOrderById(orderId);
         if (order == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            OrderResponse orderResponse = createOrderResponse(1, OrderConstant.ORDER_MSG_ORDER_NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(orderResponse);
         }
         // Pause Chef
         Chef chef = findChefByOrderId(orderId);
@@ -92,7 +102,8 @@ public class OrderController {
         // Check Order Exist
         Order order = orderService.getOrderById(orderId);
         if (order == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            OrderResponse orderResponse = createOrderResponse(1, OrderConstant.ORDER_MSG_ORDER_NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(orderResponse);
         }
         // Resume Order
         orderService.progressOrder(orderId);

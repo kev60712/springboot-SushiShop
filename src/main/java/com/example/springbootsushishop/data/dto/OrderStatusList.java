@@ -25,7 +25,7 @@ public class OrderStatusList {
         Long diffSec;
         for (Order order: orderList){
             OrderInfo orderInfo = new OrderInfo();
-            diffSec = (System.currentTimeMillis() - order.getCreatedAt().getTime())/1000;
+            diffSec = (System.currentTimeMillis() - order.getCreatedAt())/1000;
             orderInfo.setTimeSpent(diffSec.intValue());
             orderInfo.setOrderId(order.getId());
             if (order.getStatusId() == 1){
@@ -35,11 +35,11 @@ public class OrderStatusList {
             }else if (order.getStatusId() == 3){
                 paused.add(orderInfo);
             }else if (order.getStatusId() == 4){
-                diffSec = (order.getLastUpdatedAt().getTime() - order.getCreatedAt().getTime())/1000;
+                diffSec = (order.getLastUpdatedAt() - order.getCreatedAt())/1000;
                 orderInfo.setTimeSpent(diffSec.intValue());
                 completed.add(orderInfo);
             }else if (order.getStatusId() == 5){
-                diffSec = (order.getLastUpdatedAt().getTime() - order.getCreatedAt().getTime())/1000;
+                diffSec = (order.getLastUpdatedAt() - order.getCreatedAt())/1000;
                 orderInfo.setTimeSpent(diffSec.intValue());
                 cancelled.add(orderInfo);
             }

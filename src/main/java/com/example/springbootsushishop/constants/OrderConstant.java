@@ -14,4 +14,10 @@ public class OrderConstant {
     public static final String ORDER_MSG_ORDER_CANCELLED = "Order cancelled";
     public static final String ORDER_MSG_ORDER_PAUSED = "Order paused";
     public static final String ORDER_MSG_ORDER_RESUMED = "Order resumed";
+
+    // Order Error Msg
+    public static final String ORDER_MSG_PRODUCT_NOT_EXIST = "The product does not exist.";
+    public static final String ORDER_MSG_ORDER_NOT_FOUND = "Order not found";
+
+
 }

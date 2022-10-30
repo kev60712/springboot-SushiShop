@@ -25,4 +25,6 @@ public interface OrderService {
     List<Order> getAllOrder();
 
     Sushi getSushiById(Integer sushiId);
+
+    Sushi getSushiByName(String name);
 }

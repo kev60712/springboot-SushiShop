@@ -11,7 +11,7 @@ public class Order {
     private Integer id;
     private Integer statusId;
     private Integer sushiId;
-    private Timestamp createdAt;
-    private Timestamp lastUpdatedAt;
+    private Long createdAt;
+    private Long lastUpdatedAt;
 }
 

@@ -61,4 +61,9 @@ public class OrderServiceImpl implements OrderService {
         return sushiRepo.getSushiById(id);
     }
 
+    @Override
+    public Sushi getSushiByName(String name) {
+        return sushiRepo.getSushiByName(name);
+    }
+
 }
